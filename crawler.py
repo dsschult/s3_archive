@@ -14,8 +14,6 @@ import hashlib
 from multiprocessing.pool import ThreadPool
 from threading import Thread
 
-import requests
-from requests.exceptions import ReadTimeout
 
 logger = logging.getLogger('crawler')
 
@@ -91,7 +89,7 @@ def listdir(path):
         try:
             if os.path.isdir(p):
                 if os.path.islink(p):
-                    continue # skip links
+                    files.append(p)
                 dirs.append(p)
             else:
                 files.append(p)

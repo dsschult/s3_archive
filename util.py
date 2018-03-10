@@ -1,6 +1,8 @@
 import os
 import base64
 import json
+import hashlib
+from datetime import datetime
 import logging
 
 from cryptography.fernet import Fernet
@@ -64,4 +66,30 @@ class Settings(dict):
         """Set the current contents of the json file"""
         with open(self.filename,'w') as f:
             json.dump(dict(self), f, **self.json_options)
+
+
+def sha512sum(filename):
+    """
+    Get the sha512 sum of a file.
+    
+    Args:
+        filename (str): the file to checksum
+
+    Return:
+        str: a string with the checksum
+    """
+    m = hashlib.sha512()
+    with open(filename, 'rb') as f:
+        data = f.read(65536)
+        while data:
+            m.update(data)
+            data = f.read(65536)
+    return m.hexdigest()
+
+def get_date_modified(filename):
+    return datetime.utcfromtimestamp(os.path.getmtime(filename)).isoformat(timespec='microseconds')
+
+def set_date_modified(filename, time):
+    time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.%f").timestamp()
+    os.utime(filename, (time,time), follow_symlinks=False)
 

@@ -4,9 +4,9 @@ Upload files to S3 in compressed, encrypted archives or bundles.
 ## Setup
 Run `./setup.sh` to set up the python virtualenv.
 
-Run `./upload.sh` to run the uploader under the virtualenv.
+Run `./archive.py --upload <paths>` to run the uploader.
 
-Run `./restore.sh` to run the restorer under the virtualenv.
+Run `./archive.py --restore <output_path> <paths>` to run the restorer.
 
 ## How it works
 Each file is split into 256MB chunks, compressed, encrypted, and
@@ -19,6 +19,7 @@ is stored:
 
 * file path including name
 * size
+* type
 * date modified
 * sha512 checksum
 * chunk checksums as a comma-separated list, in order
